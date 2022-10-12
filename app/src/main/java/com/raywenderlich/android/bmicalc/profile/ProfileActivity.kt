@@ -32,14 +32,13 @@ package com.raywenderlich.android.bmicalc.profile
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.raywenderlich.android.bmicalc.BMIApplication
 import com.raywenderlich.android.bmicalc.R
+import com.raywenderlich.android.bmicalc.databinding.ActivityProfileBinding
 import com.raywenderlich.android.bmicalc.model.Person
 import com.raywenderlich.android.bmicalc.profile.viewmodel.ProfileViewModel
 import com.raywenderlich.android.bmicalc.profile.viewmodel.ProfileViewModelFactory
@@ -50,9 +49,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ProfileViewModel
 
-    private lateinit var editTextBirthdate: EditText
-    private lateinit var editTextHeight: EditText
-    private lateinit var fab: View
+    private lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,14 +57,11 @@ class ProfileActivity : AppCompatActivity() {
         val factory = ProfileViewModelFactory((application as BMIApplication).repository)
         viewModel = ViewModelProviders.of(this, factory)[ProfileViewModel::class.java]
 
-        setContentView(R.layout.activity_profile)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        editTextBirthdate = findViewById(R.id.editText_birthdate)
-        editTextHeight = findViewById(R.id.editText_height)
-        fab = findViewById(R.id.fab)
-
-        editTextBirthdate.setOnClickListener {
-            showDatePickerDialog(editTextBirthdate)
+        binding.editTextBirthdate.setOnClickListener {
+            showDatePickerDialog(binding.editTextBirthdate)
         }
 
         viewModel.loadProfile()
@@ -86,12 +80,12 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun showProfile(person: Person?) {
         person?.let {
-            editTextBirthdate.setText(it.birthdate.toFormattedString())
-            editTextHeight.setText(it.height.toFormattedString())
+            binding.editTextBirthdate.setText(it.birthdate.toFormattedString())
+            binding.editTextHeight.setText(it.height.toFormattedString())
         }
 
-        fab.setOnClickListener {
-            viewModel.saveProfile(editTextBirthdate.text.toString(), editTextHeight.text.toString())
+        binding.fab.setOnClickListener {
+            viewModel.saveProfile(binding.editTextBirthdate.text.toString(), binding.editTextHeight.text.toString())
         }
     }
 }
