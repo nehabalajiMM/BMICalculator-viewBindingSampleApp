@@ -45,38 +45,38 @@ import com.raywenderlich.android.bmicalc.showDatePickerDialog
 
 class LogActivity : AppCompatActivity() {
 
-  private lateinit var viewModel: LogViewModel
+    private lateinit var viewModel: LogViewModel
 
-  companion object {
-    private const val EXTRA_PERSON = "EXTRA_PERSON"
+    companion object {
+        private const val EXTRA_PERSON = "EXTRA_PERSON"
 
-    fun newIntent(context: Context, person: Person): Intent {
-      return Intent(context, LogActivity::class.java).apply {
-        putExtra(EXTRA_PERSON, person)
-      }
-    }
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    val person = intent.extras?.getParcelable<Person>(EXTRA_PERSON)!!
-    val factory = LogViewModelFactory((application as BMIApplication).repository, person)
-    viewModel = ViewModelProviders.of(this, factory)[LogViewModel::class.java]
-
-    val binding = ActivityLogBinding.inflate(layoutInflater)
-    binding.viewModel = viewModel
-    binding.lifecycleOwner = this
-    setContentView(binding.root)
-
-    binding.editTextDate.setOnClickListener {
-      showDatePickerDialog(binding.editTextDate)
+        fun newIntent(context: Context, person: Person): Intent {
+            return Intent(context, LogActivity::class.java).apply {
+                putExtra(EXTRA_PERSON, person)
+            }
+        }
     }
 
-    binding.fab.setOnClickListener {
-      viewModel.saveLog()
-      setResult(Activity.RESULT_OK)
-      finish()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val person = intent.extras?.getParcelable<Person>(EXTRA_PERSON)!!
+        val factory = LogViewModelFactory((application as BMIApplication).repository, person)
+        viewModel = ViewModelProviders.of(this, factory)[LogViewModel::class.java]
+
+        val binding = ActivityLogBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+        setContentView(binding.root)
+
+        binding.editTextDate.setOnClickListener {
+            showDatePickerDialog(binding.editTextDate)
+        }
+
+        binding.fab.setOnClickListener {
+            viewModel.saveLog()
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
     }
-  }
 }

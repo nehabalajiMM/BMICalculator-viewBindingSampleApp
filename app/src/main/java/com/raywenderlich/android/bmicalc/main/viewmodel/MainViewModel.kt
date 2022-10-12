@@ -37,15 +37,15 @@ import com.raywenderlich.android.bmicalc.main.model.MainUIModel
 import com.raywenderlich.android.bmicalc.model.Repository
 
 class MainViewModel(private val repository: Repository) : ViewModel() {
-  val _logs = MutableLiveData<MainUIModel>()
-  val logs: LiveData<MainUIModel> = _logs
+    val _logs = MutableLiveData<MainUIModel>()
+    val logs: LiveData<MainUIModel> = _logs
 
-  fun loadLogs() {
-    val person = repository.getPerson()
-    person?.let {
-      _logs.value = MainUIModel.ExistingProfile(it)
-    } ?: run {
-      _logs.value = MainUIModel.MissingProfile
+    fun loadLogs() {
+        val person = repository.getPerson()
+        person?.let {
+            _logs.value = MainUIModel.ExistingProfile(it)
+        } ?: run {
+            _logs.value = MainUIModel.MissingProfile
+        }
     }
-  }
 }

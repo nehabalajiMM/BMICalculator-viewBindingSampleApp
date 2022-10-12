@@ -35,10 +35,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.raywenderlich.android.bmicalc.model.Person
 import com.raywenderlich.android.bmicalc.model.Repository
 
-class LogViewModelFactory(private val repository: Repository,
-                          private val person: Person) : ViewModelProvider.Factory {
-  @Suppress("UNCHECKED_CAST")
-  override fun <T : ViewModel> create(modelClass: Class<T>): T {
-    return LogViewModel(repository, person) as T
-  }
+class LogViewModelFactory(
+    private val repository: Repository,
+    private val person: Person
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return LogViewModel(repository, person) as T
+    }
 }

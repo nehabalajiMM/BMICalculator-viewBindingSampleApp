@@ -35,8 +35,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.raywenderlich.android.bmicalc.model.Repository
 
 class ProfileViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
-  @Suppress("UNCHECKED_CAST")
-  override fun <T : ViewModel> create(modelClass: Class<T>): T {
-    return ProfileViewModel(repository) as T
-  }
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ProfileViewModel(repository) as T
+    }
 }

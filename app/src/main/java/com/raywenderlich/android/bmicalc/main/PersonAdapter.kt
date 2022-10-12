@@ -43,38 +43,38 @@ import com.raywenderlich.android.bmicalc.toFormattedString
 import kotlinx.android.synthetic.main.item.view.*
 
 class PersonAdapter(private val person: Person) : RecyclerView.Adapter<PersonAdapter.WeightViewHolder>() {
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeightViewHolder {
-    val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-    return WeightViewHolder(itemView)
-  }
-
-  override fun getItemCount() = person.logs.size
-
-  override fun onBindViewHolder(holder: WeightViewHolder, position: Int) {
-    holder.bind(person.logs.sortedWith(compareByDescending { it.date.time })[position])
-  }
-
-  inner class WeightViewHolder(itemView: View) :
-      RecyclerView.ViewHolder(itemView) {
-    private val weightView = itemView.textView_weight
-    private val bmiTextView = itemView.textView_bmi
-    private val bmiView = itemView.view_bmi
-    private val dateView = itemView.textView_date
-
-    fun bind(weightLog: WeightLog) {
-      weightView.text = weightView.context.getString(R.string.item_weight, weightLog.weight.toString())
-      bmiTextView.text = bmiTextView.context.getString(R.string.item_bmi, person.bmi(weightLog).toFormattedString())
-      bmiView.setBackgroundColor(getBmiColor(weightLog))
-      dateView.text = weightLog.date.toFormattedString()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeightViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
+        return WeightViewHolder(itemView)
     }
 
-    private fun getBmiColor(weightLog: WeightLog): Int {
-      return when (person.bmiState(weightLog)) {
-        BMIState.Underweight -> ContextCompat.getColor(itemView.context, R.color.colorBMIUnderweight)
-        BMIState.Healthy -> ContextCompat.getColor(itemView.context, R.color.colorBMIHealthy)
-        BMIState.Overweight -> ContextCompat.getColor(itemView.context, R.color.colorBMIOverweight)
-        BMIState.Obese -> ContextCompat.getColor(itemView.context, R.color.colorBMIObese)
-      }
+    override fun getItemCount() = person.logs.size
+
+    override fun onBindViewHolder(holder: WeightViewHolder, position: Int) {
+        holder.bind(person.logs.sortedWith(compareByDescending { it.date.time })[position])
     }
-  }
+
+    inner class WeightViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        private val weightView = itemView.textView_weight
+        private val bmiTextView = itemView.textView_bmi
+        private val bmiView = itemView.view_bmi
+        private val dateView = itemView.textView_date
+
+        fun bind(weightLog: WeightLog) {
+            weightView.text = weightView.context.getString(R.string.item_weight, weightLog.weight.toString())
+            bmiTextView.text = bmiTextView.context.getString(R.string.item_bmi, person.bmi(weightLog).toFormattedString())
+            bmiView.setBackgroundColor(getBmiColor(weightLog))
+            dateView.text = weightLog.date.toFormattedString()
+        }
+
+        private fun getBmiColor(weightLog: WeightLog): Int {
+            return when (person.bmiState(weightLog)) {
+                BMIState.Underweight -> ContextCompat.getColor(itemView.context, R.color.colorBMIUnderweight)
+                BMIState.Healthy -> ContextCompat.getColor(itemView.context, R.color.colorBMIHealthy)
+                BMIState.Overweight -> ContextCompat.getColor(itemView.context, R.color.colorBMIOverweight)
+                BMIState.Obese -> ContextCompat.getColor(itemView.context, R.color.colorBMIObese)
+            }
+        }
+    }
 }

@@ -41,32 +41,34 @@ import com.raywenderlich.android.bmicalc.toFloatOrZero
 import com.raywenderlich.android.bmicalc.toFormattedString
 import java.util.*
 
-class LogViewModel(private val repository: Repository,
-                   private val person: Person) : ViewModel() {
-  val weight = MutableLiveData<String>()
-  val date = MutableLiveData<String>().apply { value = Date().toFormattedString() }
+class LogViewModel(
+    private val repository: Repository,
+    private val person: Person
+) : ViewModel() {
+    val weight = MutableLiveData<String>()
+    val date = MutableLiveData<String>().apply { value = Date().toFormattedString() }
 
-  val isSaveEnabled = MediatorLiveData<Boolean>().apply {
-    addSource(weight) { value = validateInputs() }
-    addSource(date) { value = validateInputs() }
-  }
-
-  private fun validateInputs(): Boolean {
-    weight.value?.let { w ->
-      date.value?.let { d ->
-        return w.toFloatOrZero() > 0f && d.toDateOrToday() <= Date()
-      }
+    val isSaveEnabled = MediatorLiveData<Boolean>().apply {
+        addSource(weight) { value = validateInputs() }
+        addSource(date) { value = validateInputs() }
     }
 
-    return false
-  }
+    private fun validateInputs(): Boolean {
+        weight.value?.let { w ->
+            date.value?.let { d ->
+                return w.toFloatOrZero() > 0f && d.toDateOrToday() <= Date()
+            }
+        }
 
-  fun saveLog() {
-    weight.value?.let { w ->
-      date.value?.let { d ->
-        person.logs.add(WeightLog(w.toFloat(), d.toDateOrToday()))
-        repository.savePerson(person)
-      }
+        return false
     }
-  }
+
+    fun saveLog() {
+        weight.value?.let { w ->
+            date.value?.let { d ->
+                person.logs.add(WeightLog(w.toFloat(), d.toDateOrToday()))
+                repository.savePerson(person)
+            }
+        }
+    }
 }

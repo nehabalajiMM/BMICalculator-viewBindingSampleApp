@@ -48,50 +48,50 @@ import com.raywenderlich.android.bmicalc.toFormattedString
 
 class ProfileActivity : AppCompatActivity() {
 
-  private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: ProfileViewModel
 
-  private lateinit var editTextBirthdate: EditText
-  private lateinit var editTextHeight: EditText
-  private lateinit var fab: View
+    private lateinit var editTextBirthdate: EditText
+    private lateinit var editTextHeight: EditText
+    private lateinit var fab: View
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    val factory = ProfileViewModelFactory((application as BMIApplication).repository)
-    viewModel = ViewModelProviders.of(this, factory)[ProfileViewModel::class.java]
+        val factory = ProfileViewModelFactory((application as BMIApplication).repository)
+        viewModel = ViewModelProviders.of(this, factory)[ProfileViewModel::class.java]
 
-    setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_profile)
 
-    editTextBirthdate = findViewById(R.id.editText_birthdate)
-    editTextHeight = findViewById(R.id.editText_height)
-    fab = findViewById(R.id.fab)
+        editTextBirthdate = findViewById(R.id.editText_birthdate)
+        editTextHeight = findViewById(R.id.editText_height)
+        fab = findViewById(R.id.fab)
 
-    editTextBirthdate.setOnClickListener {
-      showDatePickerDialog(editTextBirthdate)
+        editTextBirthdate.setOnClickListener {
+            showDatePickerDialog(editTextBirthdate)
+        }
+
+        viewModel.loadProfile()
+        viewModel.person.observe(this, Observer(this::showProfile))
+        viewModel.isSaved.observe(this, Observer(this::showSaved))
     }
 
-    viewModel.loadProfile()
-    viewModel.person.observe(this, Observer(this::showProfile))
-    viewModel.isSaved.observe(this, Observer(this::showSaved))
-  }
-
-  private fun showSaved(success: Boolean) {
-    if (success) {
-      setResult(Activity.RESULT_OK)
-      finish()
-    } else {
-      Toast.makeText(this, getString(R.string.profile_invalid_inputs), Toast.LENGTH_LONG).show()
-    }
-  }
-
-  private fun showProfile(person: Person?) {
-    person?.let {
-      editTextBirthdate.setText(it.birthdate.toFormattedString())
-      editTextHeight.setText(it.height.toFormattedString())
+    private fun showSaved(success: Boolean) {
+        if (success) {
+            setResult(Activity.RESULT_OK)
+            finish()
+        } else {
+            Toast.makeText(this, getString(R.string.profile_invalid_inputs), Toast.LENGTH_LONG).show()
+        }
     }
 
-    fab.setOnClickListener {
-      viewModel.saveProfile(editTextBirthdate.text.toString(), editTextHeight.text.toString())
+    private fun showProfile(person: Person?) {
+        person?.let {
+            editTextBirthdate.setText(it.birthdate.toFormattedString())
+            editTextHeight.setText(it.height.toFormattedString())
+        }
+
+        fab.setOnClickListener {
+            viewModel.saveProfile(editTextBirthdate.text.toString(), editTextHeight.text.toString())
+        }
     }
-  }
 }

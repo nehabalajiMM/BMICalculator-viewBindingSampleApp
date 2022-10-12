@@ -33,6 +33,6 @@ package com.raywenderlich.android.bmicalc.main.model
 import com.raywenderlich.android.bmicalc.model.Person
 
 sealed class MainUIModel {
-  object MissingProfile : MainUIModel()
-  data class ExistingProfile(val person: Person) : MainUIModel()
+    object MissingProfile : MainUIModel()
+    data class ExistingProfile(val person: Person) : MainUIModel()
 }
